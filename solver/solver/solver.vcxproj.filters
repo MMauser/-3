@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="environment">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="solver">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="sudoku">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="parameterset">
+      <UniqueIdentifier>{547c2926-d4df-4269-aa3f-a6601c769a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules">
+      <UniqueIdentifier>{c7cb79a6-2441-4d14-8026-df8b104aea0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations">
+      <UniqueIdentifier>{c51c80c5-3d64-4901-b894-02d91b01583b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="environment\Stopwatch">
+      <UniqueIdentifier>{61634a45-7009-45ee-9760-5876adf0d9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations\Single Possibility">
+      <UniqueIdentifier>{50f36342-1775-42c2-a3a8-97ec39304884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations\Naked Pair">
+      <UniqueIdentifier>{a981e386-e812-48d5-8fff-934fe190dcae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations\Hidden Pair">
+      <UniqueIdentifier>{5abfe914-cd52-4bf2-9920-27ab1877ed5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations\Naked Subset">
+      <UniqueIdentifier>{80b7d04e-ecfc-45e9-b5a0-4a3cbcc36e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\rules\implementations\Hidden Subset">
+      <UniqueIdentifier>{94a7cc65-66fe-4f59-b89d-7690db530580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\Permutations">
+      <UniqueIdentifier>{0dacbc77-a5c6-4d66-b0fe-985044540a24}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>environment</Filter>
+    </ClCompile>
+    <ClCompile Include="parameterset.c">
+      <Filter>parameterset</Filter>
+    </ClCompile>
+    <ClCompile Include="sudoku.c">
+      <Filter>sudoku</Filter>
+    </ClCompile>
+    <ClCompile Include="solver.c">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="stopwatch.c">
+      <Filter>environment\Stopwatch</Filter>
+    </ClCompile>
+    <ClCompile Include="rule0.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule1.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule2.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule3.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule4.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule5.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule6.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule7.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule8.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule9.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule10.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule11.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule12.c">
+      <Filter>solver\rules\implementations\Hidden Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule13.c">
+      <Filter>solver\rules\implementations\Hidden Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule14.c">
+      <Filter>solver\rules\implementations\Hidden Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="combinator.cpp">
+      <Filter>solver\Permutations</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="defaults.h">
+      <Filter>environment</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterset.h">
+      <Filter>parameterset</Filter>
+    </ClInclude>
+    <ClInclude Include="sudoku.h">
+      <Filter>sudoku</Filter>
+    </ClInclude>
+    <ClInclude Include="solver.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="rules.h">
+      <Filter>solver\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="stopwatch.h">
+      <Filter>environment\Stopwatch</Filter>
+    </ClInclude>
+    <ClInclude Include="combinator.h">
+      <Filter>solver\Permutations</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
