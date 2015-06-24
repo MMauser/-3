@@ -25,6 +25,6 @@ int Combinator_GetNext(struct Combinator* c, int* dest) {
 
 	return !std::prev_permutation( ( ( PCombinator* ) c )->bitmask.begin(), ( ( PCombinator* ) c )->bitmask.end() );	
 }
-void Combinator_FREE( struct Combinator* c ) {
+void Combinator_Free( struct Combinator* c ) {
 	free( c );
 }
