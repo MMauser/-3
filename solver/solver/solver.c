@@ -75,11 +75,11 @@ int SolveSeq( struct Solver* solver ) {
 					if( ( change = solver->rules[i]( solver->sudoku, x, y ) ) != 0 ) {
 						highestrule = max( highestrule, i );
 #ifdef PRINTGRIDLOOP
-			wprintf_s( L"_DEBUG: gridloop\nchanged by rule%i\r\n(x:%iy:%i)=%i\r\n", i - 1, x, y, solver->sudoku->cellvalue[y][x] );
-#ifndef SUDOKU_UI
-			Sudoku_Print( solver->sudoku );
-#else
+						wprintf_s( L"_DEBUG: gridloop\nchanged by rule%i\r\n(x:%iy:%i)=%i\r\n", i, x, y, solver->sudoku->cellvalue[y][x] );
+						Sudoku_Print( solver->sudoku );
+#ifdef SUDOKU_UI
 			ForceRedraw();
+			Sleep( 100 );
 #endif
 #endif
 						x = ( unsigned int ) -1;

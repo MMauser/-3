@@ -153,14 +153,15 @@ void ForceRedraw() {
 int run( int arc, wchar_t* argv[] );
 int wmain( int argc, wchar_t* argv[] ) {
 	unsigned long long i;
+	int rc;
 	timesum = 0ll;
 
 	for( i = 0; i < 1ll; i++ ) {
-		run( argc, argv );
+		rc = run( argc, argv );
 		//wprintf_s( L"\nsolver returned: %i\n", run( argc, argv ) );
 	}
 
-	wprintf_s( L"Time avg: (%i msg): %I64d", i, (timesum / i) );
+	wprintf_s( L"Time avg: (%i runs): %I64d, retv:%i", i, (timesum / i), rc );
 	getchar();
 	return 0;
 }
@@ -246,10 +247,14 @@ int main( int argc, char* argv[] ) {
 
 	rc = Sudoku_Validate( &sudoku ) != 0;
 
-#if 1 || defined(_DEBUG) || defined(PRINTDEBUG)
+#if defined(_DEBUG) || defined(PRINTDEBUG)
 	if( rc == 0 ) wprintf_s( L"validation successful.\n" );
 	else wprintf_s( L"validation failed.\n" );
+#if defined SUDOKU_UI 
+	getchar();
+#endif
 #endif
 	
+
 	return rc;
 }

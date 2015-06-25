@@ -19,7 +19,7 @@ int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 		}
 	}
 
-	if( j <= 4 ) return 0;
+	if( j <= 3 ) return 0;
 
 	for( i = 2; i < 4; i++ ) {
 		Combinator_Initialize( &c, i, index, j );
