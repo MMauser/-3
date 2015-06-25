@@ -1,29 +1,53 @@
 #include "rules.h"
 
-//fuk dis
+//naked subset box
 int rule11( struct Sudoku* sud, unsigned int x, unsigned int y ) {
-	unsigned int i, changed, subset, ctPartners;
-	unsigned int partners[5];
+	struct Combinator c;
+	SudokuCell cellok;
+	SudokuCell subset;
 
-	for( subset = 5; subset >= 3; subset-- ) {
-		if( __popcnt64( sud->grid[y][x] ) > subset ) continue;
+	unsigned int i, j, k;
+	unsigned int index[64] = { 0 };
+	unsigned int combination[4] = { 0 };
+	unsigned int curcell = BOXINDEX( sud, x, y );
 
-		ctPartners = 0;
-		for( i = 0; i < sud->length; i++ ) {
-			if( ( &( sud->grid[y][x] ) != ( sud->cellbox[y][x][i] ) ) && ( *sud->cellbox[y][x][i] & sud->grid[y][x] ) && ( ( ( *sud->cellbox[y][x][i] ) & ( ~sud->grid[y][x] ) ) == 0 ) ) {
-				partners[ctPartners++] = i;
+	j = 0;
+
+	for( i = 0; i < sud->length; i++ ) {
+		if( *sud->cellboxvalue[y][x][i] == 0 && i != curcell ) {
+			index[j++] = i;
+		}
+	}
+
+	if( j <= 3 ) return 0;
+
+	for( i = 2; i < 3; i++ ) {
+		Combinator_Initialize( &c, i, index, j );
+		combination[i] = curcell;
+
+		while( Combinator_GetNext( &c, combination ) == 0 ) {
+
+			subset = 0;
+			for( j = 0; j <= i; j++ ) {
+				subset |= combination[j];
+				for( k = j + 1; k <= i; k++ ) {
+					if( *sud->cellbox[y][x][combination[j]] & *sud->cellbox[y][x][combination[k]] ) {
+						cellok |= ( ( 1 << j ) | ( 1 << k ) );
+						break;
+					}
+				}
 			}
+			if( __popcnt64( cellok ) != i + 1 ) continue;
+
+			for( j = 0; j < sud->length; j++ ) {
+				if( ( cellok & ( 1ll << j ) ) == 0 ) {
+					*sud->cellbox[y][x][j] &= ( ~subset );
+				}
+			}
+
+			return 1;
 		}
 
-		if( ctPartners != subset ) continue;
-
-		changed = 0;
-		for( i = 0; i < sud->length; i++ ) {
-			changed |= ( ( *sud->cellbox[y][x][i] ) & ( ~sud->grid[y][x] ) );
-			*sud->cellbox[y][x][i] &= ( ~sud->grid[y][x] );
-		}
-
-		return changed;
 	}
 
 	return 0;

@@ -19,6 +19,7 @@
 
 
 //defined to print changed made to grid by rule
+//
 #define PRINTGRIDLOOP
 //defined to print result of sudoku validation
 #define PRINTVALIDATION

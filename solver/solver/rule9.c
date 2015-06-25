@@ -6,9 +6,9 @@ int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	SudokuCell cellok;
 	SudokuCell subset;
 
-	int i, j, k;
-	int index[64] = { 0 };
-	int combination[4] = { 0 };
+	unsigned int i, j, k;
+	unsigned int index[64] = { 0 };
+	unsigned int combination[4] = { 0 };
 
 	j = 0;
 
@@ -17,6 +17,8 @@ int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 			index[j++] = i;
 		}
 	}
+
+	if( j <= 3 ) return 0;
 
 	for( i = 2; i < 3; i++ ) {
 		Combinator_Initialize( &c, i, index, j );
@@ -41,6 +43,8 @@ int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 					sud->grid[j][x] &= ( ~subset );
 				}
 			}
+
+			return 1;
 		}
 
 	}

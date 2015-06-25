@@ -5,10 +5,13 @@
 #include "stopwatch.h"
 
 #ifdef _WIN32
-#ifdef _DEBUG
+#if defined _DEBUG ||defined PRINTVALIDATION
 int run( int arc, wchar_t* argv[] );
 int wmain( int argc, wchar_t* argv[] ) {
-	wprintf_s( L"\n\nsolver returned: %i\n", run( argc, argv ) );
+	int i;
+	for( i = 0; i < 10; i++ ) {
+		wprintf_s( L"\n\nsolver returned: %i\n", run( argc, argv ) );
+	}
 	getchar();
 	return 0;
 }
@@ -89,7 +92,6 @@ int main( int argc, char* argv[] ) {
 #if defined(_DEBUG) || defined(PRINTVALIDATION)
 	if( rc == 0 ) wprintf_s( L"validation successful.\n" );
 	else wprintf_s( L"validation failed.\n" );
-	getchar();
 #endif
 	
 	return rc;
