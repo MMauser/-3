@@ -60,53 +60,56 @@
     <ClCompile Include="stopwatch.c">
       <Filter>environment\Stopwatch</Filter>
     </ClCompile>
-    <ClCompile Include="rule0.c">
-      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    <ClCompile Include="combinator.cpp">
+      <Filter>solver\Permutations</Filter>
     </ClCompile>
-    <ClCompile Include="rule1.c">
-      <Filter>solver\rules\implementations\Single Possibility</Filter>
-    </ClCompile>
-    <ClCompile Include="rule2.c">
-      <Filter>solver\rules\implementations\Single Possibility</Filter>
-    </ClCompile>
-    <ClCompile Include="rule3.c">
-      <Filter>solver\rules\implementations\Naked Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule4.c">
-      <Filter>solver\rules\implementations\Naked Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule5.c">
-      <Filter>solver\rules\implementations\Naked Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule6.c">
-      <Filter>solver\rules\implementations\Hidden Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule7.c">
-      <Filter>solver\rules\implementations\Hidden Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule8.c">
-      <Filter>solver\rules\implementations\Hidden Pair</Filter>
-    </ClCompile>
-    <ClCompile Include="rule9.c">
-      <Filter>solver\rules\implementations\Naked Subset</Filter>
-    </ClCompile>
-    <ClCompile Include="rule10.c">
-      <Filter>solver\rules\implementations\Naked Subset</Filter>
-    </ClCompile>
-    <ClCompile Include="rule11.c">
-      <Filter>solver\rules\implementations\Naked Subset</Filter>
-    </ClCompile>
-    <ClCompile Include="rule12.c">
-      <Filter>solver\rules\implementations\Hidden Subset</Filter>
-    </ClCompile>
-    <ClCompile Include="rule13.c">
+    <ClCompile Include="rule15.c">
       <Filter>solver\rules\implementations\Hidden Subset</Filter>
     </ClCompile>
     <ClCompile Include="rule14.c">
       <Filter>solver\rules\implementations\Hidden Subset</Filter>
     </ClCompile>
-    <ClCompile Include="combinator.cpp">
-      <Filter>solver\Permutations</Filter>
+    <ClCompile Include="rule13.c">
+      <Filter>solver\rules\implementations\Hidden Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule12.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule11.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule10.c">
+      <Filter>solver\rules\implementations\Naked Subset</Filter>
+    </ClCompile>
+    <ClCompile Include="rule9.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule8.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule7.c">
+      <Filter>solver\rules\implementations\Hidden Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule6.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule5.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule4.c">
+      <Filter>solver\rules\implementations\Naked Pair</Filter>
+    </ClCompile>
+    <ClCompile Include="rule3.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule2.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule1.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
+    </ClCompile>
+    <ClCompile Include="rule0.c">
+      <Filter>solver\rules\implementations\Single Possibility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

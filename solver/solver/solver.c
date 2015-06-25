@@ -4,7 +4,7 @@
 //------------------------------------------------
 //edit this array to change ruleset !
 static const RULE rules[] = {
-	&rule0,
+	&rule0, 
 	&rule1,
 	&rule2,
 	&rule3,
@@ -18,7 +18,8 @@ static const RULE rules[] = {
 	&rule11,
 	&rule12,
 	&rule13,
-	&rule14
+	&rule14,
+	&rule15
 };
 
 //------------------------------------------------
@@ -74,8 +75,12 @@ int SolveSeq( struct Solver* solver ) {
 					if( ( change = solver->rules[i]( solver->sudoku, x, y ) ) != 0 ) {
 						highestrule = max( highestrule, i );
 #ifdef PRINTGRIDLOOP
-			wprintf_s( L"_DEBUG: gridloop\nchanged by rule%i\r\n(x:%iy:%i)=%i\r\n", i, x, y, solver->sudoku->cellvalue[y][x] );
+			wprintf_s( L"_DEBUG: gridloop\nchanged by rule%i\r\n(x:%iy:%i)=%i\r\n", i - 1, x, y, solver->sudoku->cellvalue[y][x] );
+#ifndef SUDOKU_UI
 			Sudoku_Print( solver->sudoku );
+#else
+			ForceRedraw();
+#endif
 #endif
 						x = ( unsigned int ) -1;
 			            i = 0;
@@ -88,7 +93,7 @@ int SolveSeq( struct Solver* solver ) {
 	} while( change != 0 );
 	
 #if defined _DEBUG || defined PRINTDEBUG
-	//wprintf_s( L"_DEBUG: highest rule: %i\r\n", highestrule );
+	wprintf_s( L"_DEBUG: highest rule: %i\r\n", highestrule );
 #endif
 
 	return 0;

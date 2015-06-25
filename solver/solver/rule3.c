@@ -1,23 +1,27 @@
 #include "rules.h"
 
-//naked pair row
+//prüft ob ein Wert innerhalb einer Box
+//nur in der aktuellen Zelle möglich ist
 int rule3( struct Sudoku* sud, unsigned int x, unsigned int y ) {
-	unsigned int i, j;
-	SudokuCell changed;
-	if( __popcnt64( sud->grid[y][x] ) != 2 ) return 0;
+	unsigned int i;
+	SudokuCell box;
 
+	box = 0;
+	//Erzeuge Bitvektor aus aktueller Box
 	for( i = 0; i < sud->length; i++ ) {
-		if( i == x ) continue;
-		if( ( sud->grid[y][i] ^ sud->grid[y][x] ) == 0 ) {
-			changed = 0;
-			for( j = 0; j < sud->length; j++ ) {
-				if( j != i && j != x ) {
-					changed |= ( sud->grid[y][j] & sud->grid[y][x] );
-					sud->grid[y][j] &= ( ~( sud->grid[y][x] ) );
-				}
-			}
+		if( sud->cellbox[y][x][i] != &sud->grid[y][x] ) {
+			box |= *sud->cellbox[y][x][i];
+		}
+	}
 
-			return changed != 0;
+	//Laufe durch die Kandiaten 
+	for( i = 0; i < sud->length; i++ ) {
+		//Wenn Kandidat gefunden
+		if( ( sud->grid[y][x] & ( 1ll << i ) ) != 0 ) {
+			if( ( box & ( 1ll << i ) ) == 0 ) {
+				sud->pSetCell( sud, x, y, i + 1 );
+				return 1;
+			}
 		}
 	}
 

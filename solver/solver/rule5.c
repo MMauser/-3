@@ -1,20 +1,23 @@
 #include "rules.h"
 
-//Naked pairs box
+//naked pair col
 int rule5( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	unsigned int i, j;
 	SudokuCell changed;
+	if( __popcnt64( sud->grid[y][x] ) != 2 ) return 0;
 
-	if( __popcnt64( sud->grid[y][x] ) == 2 ) {
-		for( i = 0; i < sud->length; i++ ) {
-			if( ( ( ( sud->grid[y][x] ) ^ ( *sud->cellbox[y][x][i] ) ) == 0 ) && ( &sud->grid[y][x] ) != sud->cellbox[y][x][i] ) {
-				changed = 0;
-				for( j = 0; j < sud->length; j++ ) {
-					changed |= ( ( *sud->cellbox[y][x][j] ) & sud->grid[y][x] );
-					*sud->cellbox[y][x][j] &= ( ~( sud->grid[y][x] ) );
+	for( i = 0; i < sud->length; i++ ) {
+		if( i == y ) continue;
+		if( ( sud->grid[i][x] ^ sud->grid[y][x] ) == 0 ) {
+			changed = 0;
+			for( j = 0; j < sud->length; j++ ) {
+				if( j != i && j != y ) {
+					changed |= ( sud->grid[j][x] & sud->grid[y][x] );
+					sud->grid[j][x] &= ( ~( sud->grid[y][x] ) );
 				}
-				return changed != 0;
 			}
+
+			return changed != 0;
 		}
 	}
 

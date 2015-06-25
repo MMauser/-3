@@ -6,6 +6,148 @@
 
 unsigned long long timesum;
 
+#ifdef SUDOKU_UI
+
+static struct Sudoku* gsud;
+HWND hWnd;
+
+static LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
+DWORD WINAPI hWindow( struct Sudoku* sud ) {
+	ATOM cid = 0;
+	MSG msg = { 0 };
+	WNDCLASS wndclass = { 0 };
+	HINSTANCE hInstance = GetModuleHandle( 0 );
+
+	gsud = sud;
+
+	wndclass.style = CS_HREDRAW | CS_VREDRAW;
+	wndclass.lpfnWndProc = WndProc;
+	wndclass.hInstance = hInstance;
+	wndclass.hIcon = ( HICON ) LoadIcon( 0, IDI_APPLICATION );
+	wndclass.hCursor = LoadCursor( NULL, IDC_ARROW );
+	wndclass.hbrBackground = CreateSolidBrush( RGB( 240, 240, 240 ) );
+	wndclass.lpszClassName = _T( "MyWindowClass" );
+
+	cid = RegisterClass( &wndclass );
+	if( cid == 0 ) {
+		MessageBox( NULL, _T( "RegisterClass has failed" ), NULL, MB_OK | MB_ICONERROR );
+		DestroyIcon( wndclass.hIcon );
+		return EXIT_FAILURE;
+	}
+
+	hWnd = CreateWindow( ( LPTSTR ) cid, _T( "Ohne Konservierungsstoffe" ), WS_OVERLAPPEDWINDOW, 0, 0, 640, 640, NULL, NULL, hInstance, NULL );
+
+	ShowWindow( hWnd, SW_SHOW );
+	UpdateWindow( hWnd );
+
+	while( GetMessage( &msg, NULL, 0, 0 ) ) {
+		TranslateMessage( &msg );
+		DispatchMessage( &msg );
+	}
+
+	UnregisterClass( ( LPTSTR ) cid, hInstance );
+
+	return ( int ) msg.wParam;
+}
+
+
+void onPaint( WPARAM wParam, LPARAM lParam ) {
+	HPEN hBoxLine = CreatePen( PS_SOLID, 2, 0 );
+	PAINTSTRUCT ps;
+	RECT rcClient;
+	HDC hdc = BeginPaint( hWnd, &ps );
+	wchar_t buffer[512];
+	HANDLE hOldPen;
+
+	GetClientRect( hWnd, &rcClient );
+
+	int width = rcClient.right / 9;
+	int height = rcClient.bottom / 9;
+
+	SetBkMode( hdc, TRANSPARENT );
+
+	for( int i = 0; i < gsud->length; i++ ) {
+		for( int x = 0; x < gsud->length; x++ ) {
+			int iy = 5;
+			int ix = 5;
+			if( gsud->cellvalue[i][x] != 0 ) {
+				SetTextColor( hdc, RGB( 0, 150, 0 ) );
+				wsprintfW( buffer, L"%i", gsud->cellvalue[i][x] );
+				TextOut( hdc, x * width + width / 2 - 5, i * height + height / 2 - 5, buffer, lstrlenW( buffer ) );
+			} else {
+
+				for( int p = 0; p < gsud->length; p++ ) {
+
+
+					if( p != 0 && p % gsud->length_of_box == 0 ) {
+						iy += height / gsud->length_of_box;
+						ix = 5;
+					} else if( p ) ix += width / gsud->length_of_box;
+
+					if( gsud->grid[i][x] & ( 1 << p ) ) {
+						SetTextColor( hdc, 0 );
+					} else SetTextColor( hdc, RGB( 200, 200, 200 ) );
+
+					wsprintfW( buffer, L"%i", p + 1 );
+					TextOutW( hdc, x * width + ix, i * height + iy, buffer, lstrlenW( buffer ) );
+				}
+			}
+		
+		}
+
+		if( i != 0 && i % gsud->length_of_box == 0 ) {
+			hOldPen = SelectObject( hdc, hBoxLine );
+			MoveToEx( hdc, 0, i * height, NULL );
+			LineTo( hdc, rcClient.right, i * height );
+			MoveToEx( hdc, i * width, 0, NULL );
+			LineTo( hdc, i * width, rcClient.bottom );
+			SelectObject( hdc, hOldPen );
+		} else {
+			MoveToEx( hdc, 0, i * height, NULL );
+			LineTo( hdc, rcClient.right, i * height );
+			MoveToEx( hdc, i * width, 0, NULL );
+			LineTo( hdc, i * width, rcClient.bottom );
+		}
+	}
+
+	DeleteObject( hBoxLine );
+	EndPaint( hWnd, &ps );
+}
+
+LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) {
+	static HANDLE hProcess;
+
+	switch( msg ) {
+	case WM_CREATE:
+		SetTimer( hWnd, 0, 100, NULL );
+		return 0;
+	case WM_TIMER:
+		InvalidateRect( hWnd, NULL, TRUE );
+		return 0;
+	case WM_PAINT:
+		onPaint( wParam, lParam );
+		return 0;
+	case WM_KEYDOWN:
+		return 0;
+	case WM_CLOSE:
+	case WM_QUIT:
+	case WM_DESTROY:
+		PostQuitMessage( 0 );
+		return 0;
+	}
+
+	return DefWindowProc( hWnd, msg, wParam, lParam );
+}
+
+void ForceRedraw() {
+	onPaint( NULL, NULL );
+}
+
+#endif
+
+
+
+
 #ifdef _WIN32
 #if !defined _DEBUG || defined PRINTDEBUG
 int run( int arc, wchar_t* argv[] );
@@ -13,7 +155,7 @@ int wmain( int argc, wchar_t* argv[] ) {
 	unsigned long long i;
 	timesum = 0ll;
 
-	for( i = 0; i < 64ll; i++ ) {
+	for( i = 0; i < 1ll; i++ ) {
 		run( argc, argv );
 		//wprintf_s( L"\nsolver returned: %i\n", run( argc, argv ) );
 	}
@@ -72,6 +214,9 @@ int main( int argc, char* argv[] ) {
 	case 0:
 #ifdef _DEBUG
 		wprintf_s( L"_DEBUG:sudoku parser succeeded\n" );
+#ifdef SUDOKU_UI
+		CreateThread( NULL, 0, ( LPTHREAD_START_ROUTINE ) &hWindow, ( LPVOID ) &sudoku, 0, NULL );
+#endif
 #endif
 		break;
 	}

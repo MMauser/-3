@@ -1,56 +1,27 @@
 #include "rules.h"
 
-//naked subset column
+//Hidden Pairs in Boxen
 int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
-	struct Combinator c;
-	SudokuCell cellok;
-	SudokuCell subset;
-	SudokuCell changed;
-
-	unsigned int i, j, k;
-	unsigned int index[64] = { 0 };
-	unsigned int combination[5] = { 0 };
-
-	j = 0;
+	unsigned int i, j;
+	SudokuCell candidate, neighbourhood;
 
 	for( i = 0; i < sud->length; i++ ) {
-		if( sud->cellvalue[i][x] == 0 && i != y ) {
-			index[j++] = i;
-		}
-	}
+		candidate = ( sud->grid[y][x] ) & ( *sud->cellbox[y][x][i] );
+		if( ( __popcnt64( candidate ) == 2ll ) && ( &sud->grid[y][x] != sud->cellbox[y][x][i] ) ) {
+			if( __popcnt64( sud->grid[y][x] ) != 2ll || __popcnt64( *sud->cellbox[y][x][i] ) != 2ll ) {
+				neighbourhood = 0;
+				for( j = 0; j < sud->length; j++ ) {
+					if( sud->cellbox[y][x][j] != &sud->grid[y][x] && j != i ) neighbourhood |= *sud->cellbox[y][x][j];
+				}
 
-	if( j <= 4 ) return 0;
-
-	for( i = 2; i < 4; i++ ) {
-		Combinator_Initialize( &c, i, index, j );
-		combination[i] = y;
-
-		while( Combinator_GetNext( &c, combination ) == 0 ) {
-
-			subset = 0;
-			for( j = 0; j <= i; j++ ) {
-				subset |= combination[j];
-				for( k = j + 1; k <= i; k++ ) {
-					if( sud->grid[combination[j]][x] & sud->grid[combination[k]][x] ) {
-						cellok |= ( ( 1 << j ) | ( 1 << k ) );
-						break;
-					}
+				if( ( candidate & neighbourhood ) == 0 ) {
+					*sud->cellbox[y][x][i] = candidate;
+					sud->grid[y][x] = candidate;
+					return 1;
 				}
 			}
-			if( __popcnt64( cellok ) != i + 1 ) continue;
-
-			changed = 0;
-			for( j = 0; j < sud->length; j++ ) {
-				if( ( cellok & ( 1ll << j ) ) == 0 ) {
-					changed |= sud->grid[j][x] & subset;
-					sud->grid[j][x] &= ( ~subset );
-				}
-			}
-
-			return changed != 0;
+			return 0;
 		}
-
 	}
-
 	return 0;
 }

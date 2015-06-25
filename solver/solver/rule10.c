@@ -1,6 +1,6 @@
 #include "rules.h"
 
-//naked subset row
+//naked subset column
 int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	struct Combinator c;
 	SudokuCell cellok;
@@ -14,7 +14,7 @@ int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	j = 0;
 
 	for( i = 0; i < sud->length; i++ ) {
-		if( sud->cellvalue[y][i] == 0 && i != x ) {
+		if( sud->cellvalue[i][x] == 0 && i != y ) {
 			index[j++] = i;
 		}
 	}
@@ -23,7 +23,7 @@ int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 
 	for( i = 2; i < 4; i++ ) {
 		Combinator_Initialize( &c, i, index, j );
-		combination[i] = x;
+		combination[i] = y;
 
 		while( Combinator_GetNext( &c, combination ) == 0 ) {
 
@@ -31,7 +31,7 @@ int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 			for( j = 0; j <= i; j++ ) {
 				subset |= combination[j];
 				for( k = j + 1; k <= i; k++ ) {
-					if( sud->grid[y][combination[j]] & sud->grid[y][combination[k]] ) {
+					if( sud->grid[combination[j]][x] & sud->grid[combination[k]][x] ) {
 						cellok |= ( ( 1 << j ) | ( 1 << k ) );
 						break;
 					}
@@ -42,8 +42,8 @@ int rule10( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 			changed = 0;
 			for( j = 0; j < sud->length; j++ ) {
 				if( ( cellok & ( 1ll << j ) ) == 0 ) {
-					changed |= ( sud->grid[y][j] & subset );
-					sud->grid[y][j] &= ( ~subset );
+					changed |= sud->grid[j][x] & subset;
+					sud->grid[j][x] &= ( ~subset );
 				}
 			}
 

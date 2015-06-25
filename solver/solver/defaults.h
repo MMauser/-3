@@ -20,6 +20,11 @@
 
 //defined to print changed made to grid by rule
 //
-//#define PRINTGRIDLOOP
+#define PRINTGRIDLOOP
 //defined to print debug messages
-//#define PRINTDEBUG
+#define PRINTDEBUG
+//gui
+#define SUDOKU_UI
+#ifdef SUDOKU_UI
+void ForceRedraw();
+#endif

@@ -96,7 +96,7 @@ int Sudoku_ParseFile( struct Sudoku* sud, const wchar_t* filepath, const wchar_t
 		if( sud->cellboxvalue[i] == NULL ) goto CLEANUP;
 
 		for( j = 0; j < sud->length; j++ ) {
-			//position (0,0) in box-> allocate
+			//position (0,0) in box->allocate
 			if( j % sud->length_of_box == 0 && i % sud->length_of_box == 0 ) {
 				sud->cellbox[i][j] = ( SudokuCell** ) calloc( sud->length, sizeof( SudokuCell* ) );
 				if( sud->cellbox[i][j] == NULL ) goto CLEANUP;
@@ -150,8 +150,6 @@ int Sudoku_ParseFile( struct Sudoku* sud, const wchar_t* filepath, const wchar_t
 			cellvalue += file[i] - '0';
 		}
 	}
-
-
 
 	//skip cleanup
 	retv = 0;
@@ -245,7 +243,7 @@ void Sudoku_SetCell( struct Sudoku* sud, unsigned int x, unsigned int y, unsigne
 	value--;
 
 	//set all other values to impossible
-	sud->grid[y][x] = 0;
+	sud->grid[y][x] = 0ll;
 
 	//store value in contains
 	sud->contains[CONTAINS_COL][x] |= ( 1ll << value );

@@ -15,7 +15,7 @@ void Stopwatch_Start( struct Stopwatch* timer );
 #ifdef STOPWATCH_TIME
 double Stopwatch_GetTime( struct Stopwatch* timer );
 #else
-unsigned long long Stopwatch_GetTime( struct StopWatch* timer );
+unsigned long long Stopwatch_GetTime( struct Stopwatch* timer );
 #endif
 
 #endif

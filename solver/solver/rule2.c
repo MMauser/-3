@@ -1,24 +1,27 @@
 #include "rules.h"
 
-//prüft ob ein Wert innerhalb einer Box
+//prüft ob ein Wert innerhalb einer Spalte
 //nur in der aktuellen Zelle möglich ist
 int rule2( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	unsigned int i;
-	SudokuCell box;
+	SudokuCell col;
 
-	box = 0;
-	//Erzeuge Bitvektor aus aktueller Box
+	col = 0;
 	for( i = 0; i < sud->length; i++ ) {
-		if( sud->cellbox[y][x][i] != &sud->grid[y][x] ) {
-			box |= *sud->cellbox[y][x][i];
+		if( i != y ) {
+			col |= sud->grid[i][x];
 		}
 	}
 
-	//Laufe durch die Kandiaten 
+	//loop through candidates
 	for( i = 0; i < sud->length; i++ ) {
-		//Wenn Kandidat gefunden
+
+		//wenn kandidat gefunden
 		if( ( sud->grid[y][x] & ( 1ll << i ) ) != 0 ) {
-			if( ( box & ( 1ll << i ) ) == 0 ) {
+
+			//wenn kandidat an keiner anderen Stelle in Spalte möglich ist
+			//Setze Zellwert
+			if( ( col & ( 1ll << i ) ) == 0 ) {
 				sud->pSetCell( sud, x, y, i + 1 );
 				return 1;
 			}
