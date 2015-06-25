@@ -246,7 +246,7 @@ int main( int argc, char* argv[] ) {
 
 	rc = Sudoku_Validate( &sudoku ) != 0;
 
-#if !defined(_DEBUG) || defined(PRINTDEBUG)
+#if 1 || defined(_DEBUG) || defined(PRINTDEBUG)
 	if( rc == 0 ) wprintf_s( L"validation successful.\n" );
 	else wprintf_s( L"validation failed.\n" );
 #endif
