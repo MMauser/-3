@@ -5,11 +5,11 @@
 #include "stopwatch.h"
 
 #ifdef _WIN32
-#if defined _DEBUG ||defined PRINTVALIDATION
+#if defined _DEBUG || defined PRINTDEBUG
 int run( int arc, wchar_t* argv[] );
 int wmain( int argc, wchar_t* argv[] ) {
 	int i;
-	for( i = 0; i < 10; i++ ) {
+	for( i = 0; i < 1; i++ ) {
 		wprintf_s( L"\n\nsolver returned: %i\n", run( argc, argv ) );
 	}
 	getchar();
@@ -69,7 +69,7 @@ int main( int argc, char* argv[] ) {
 	}
 	if( params.timer != 0 ) printf( "time sudokuparser: %.3fms\r\n", Stopwatch_GetTime( &stopwatch ) * 1000 );
 
-#ifdef _DEBUG
+#if defined _DEBUG || defined PRINTDEBUG
 	wprintf_s( L"_DEBUG: parsed file:\n" );
 	Sudoku_Print( &sudoku );
 #endif
@@ -81,15 +81,16 @@ int main( int argc, char* argv[] ) {
 
 	if( params.timer != 0 ) Stopwatch_Start( &stopwatch );
 	rc = Solver_Solve( &solver );
-#if defined(_DEBUG) || defined(PRINTVALIDATION)
+	if( params.timer != 0 ) printf_s( "time solver: %.3fms\r\n", Stopwatch_GetTime( &stopwatch ) * 1000 );
+
+#if defined(_DEBUG) || defined(PRINTDEBUG)
 	wprintf_s( L"_DEBUG: solve returned: %i\n\ncurrent grid:\n", rc );
 	Sudoku_Print( &sudoku );
 #endif
-	if( params.timer != 0 ) printf_s( "time solver: %.3fms\r\n", Stopwatch_GetTime( &stopwatch ) * 1000 );
 
 	rc = Sudoku_Validate( &sudoku ) != 0;
 
-#if defined(_DEBUG) || defined(PRINTVALIDATION)
+#if !defined(_DEBUG) || defined(PRINTDEBUG)
 	if( rc == 0 ) wprintf_s( L"validation successful.\n" );
 	else wprintf_s( L"validation failed.\n" );
 #endif

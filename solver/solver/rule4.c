@@ -2,7 +2,8 @@
 
 //naked pair col
 int rule4( struct Sudoku* sud, unsigned int x, unsigned int y ) {
-	unsigned int i, j, changed;
+	unsigned int i, j;
+	SudokuCell changed;
 	if( __popcnt64( sud->grid[y][x] ) != 2 ) return 0;
 
 	for( i = 0; i < sud->length; i++ ) {
@@ -16,7 +17,7 @@ int rule4( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 				}
 			}
 
-			return changed;
+			return changed != 0;
 		}
 	}
 
