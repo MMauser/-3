@@ -22,4 +22,4 @@
 //
 //#define PRINTGRIDLOOP
 //defined to print debug messages
-#define PRINTDEBUG
+//#define PRINTDEBUG

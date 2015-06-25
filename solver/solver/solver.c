@@ -88,7 +88,7 @@ int SolveSeq( struct Solver* solver ) {
 	} while( change != 0 );
 	
 #if defined _DEBUG || defined PRINTDEBUG
-	wprintf_s( L"_DEBUG: highest rule: %i\r\n", highestrule );
+	//wprintf_s( L"_DEBUG: highest rule: %i\r\n", highestrule );
 #endif
 
 	return 0;

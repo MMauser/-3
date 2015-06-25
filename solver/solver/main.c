@@ -4,14 +4,21 @@
 #include "sudoku.h"
 #include "stopwatch.h"
 
+unsigned long long timesum;
+
 #ifdef _WIN32
-#if defined _DEBUG || defined PRINTDEBUG
+#if !defined _DEBUG || defined PRINTDEBUG
 int run( int arc, wchar_t* argv[] );
 int wmain( int argc, wchar_t* argv[] ) {
-	int i;
-	for( i = 0; i < 1; i++ ) {
-		wprintf_s( L"\n\nsolver returned: %i\n", run( argc, argv ) );
+	unsigned long long i;
+	timesum = 0ll;
+
+	for( i = 0; i < 64ll; i++ ) {
+		run( argc, argv );
+		//wprintf_s( L"\nsolver returned: %i\n", run( argc, argv ) );
 	}
+
+	wprintf_s( L"Time avg: (%i msg): %I64d", i, (timesum / i) );
 	getchar();
 	return 0;
 }
@@ -28,6 +35,7 @@ int main( int argc, char* argv[] ) {
 	struct Solver solver;
 	struct Sudoku sudoku;
 	struct Stopwatch stopwatch;
+	unsigned long long timerun;
 	int rc;
 
 	switch( ParameterSet_Parse( &params, argv ) ) {
@@ -41,7 +49,7 @@ int main( int argc, char* argv[] ) {
 		wprintf_s( L"no strategies specified\n" );
 		return EXIT_FAILURE;
 	case PARAMWARNING_NODELIMITER:
-		wprintf_s( L"no delimiter specified, fallback to ' '\n" );
+		//wprintf_s( L"no delimiter specified, fallback to ' '\n" );
 		break;
 	case 0:
 #ifdef _DEBUG
@@ -67,7 +75,7 @@ int main( int argc, char* argv[] ) {
 #endif
 		break;
 	}
-	if( params.timer != 0 ) printf( "time sudokuparser: %.3fms\r\n", Stopwatch_GetTime( &stopwatch ) * 1000 );
+	//if( params.timer != 0 ) printf( "time sudokuparser: %I64d\r\n", Stopwatch_GetTime( &stopwatch ) );
 
 #if defined _DEBUG || defined PRINTDEBUG
 	wprintf_s( L"_DEBUG: parsed file:\n" );
@@ -81,7 +89,10 @@ int main( int argc, char* argv[] ) {
 
 	if( params.timer != 0 ) Stopwatch_Start( &stopwatch );
 	rc = Solver_Solve( &solver );
-	if( params.timer != 0 ) printf_s( "time solver: %.3fms\r\n", Stopwatch_GetTime( &stopwatch ) * 1000 );
+
+	timerun = Stopwatch_GetTime( &stopwatch );
+	if( params.timer != 0 ) printf_s( "time solver: %I64d\r\n", timerun );
+	timesum += timerun;
 
 #if defined(_DEBUG) || defined(PRINTDEBUG)
 	wprintf_s( L"_DEBUG: solve returned: %i\n\ncurrent grid:\n", rc );
