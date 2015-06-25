@@ -79,7 +79,7 @@ int SolveSeq( struct Solver* solver ) {
 						Sudoku_Print( solver->sudoku );
 #ifdef SUDOKU_UI
 			ForceRedraw();
-			Sleep( 100 );
+			Sleep( 50 );//give the ui time to refresh before hitting next breakpoint
 #endif
 #endif
 						x = ( unsigned int ) -1;

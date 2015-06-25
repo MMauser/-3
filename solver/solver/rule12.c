@@ -30,7 +30,7 @@ int rule12( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 
 			subset = 0;
 			for( j = 0; j <= i; j++ ) {
-				subset |= combination[j];
+				subset |= *sud->cellbox[y][x][combination[j]];
 				for( k = j + 1; k <= i; k++ ) {
 					if( *sud->cellbox[y][x][combination[j]] & *sud->cellbox[y][x][combination[k]] ) {
 						cellok |= ( ( 1 << j ) | ( 1 << k ) );
@@ -39,6 +39,7 @@ int rule12( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 				}
 			}
 			if( __popcnt64( cellok ) != i + 1 ) continue;
+			if( __popcnt64( subset ) != i + 1 ) continue;
 
 			changed = 0;
 			for( j = 0; j < sud->length; j++ ) {

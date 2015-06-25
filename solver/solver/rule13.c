@@ -1,6 +1,6 @@
 #include "rules.h"
 
-//hidden subset row
+//hidden subset col
 int rule13( struct Sudoku* sud, unsigned int x, unsigned  int y ) {
 	struct Combinator c;
 
@@ -31,20 +31,31 @@ int rule13( struct Sudoku* sud, unsigned int x, unsigned  int y ) {
 			subset = 0ll;
 
 			for( j = 0; j <= i; j++ ) {
-				subset |= combination[j];
 				for( k = j + 1; k <= i; k++ ) {
 					if( sud->grid[combination[j]][x] & sud->grid[combination[k]][x] ) {
 						cellok |= ( ( 1 << j ) | ( 1 << k ) );
+						subset |= sud->grid[combination[j]][x] & sud->grid[combination[k]][x];
 						break;
 					}
 				}
 			}
-			
+
 			if( __popcnt64( cellok ) != i + 1 ) continue;
 
+			for( j = 0; j < sud->length; j++ ) {
+				if( ( cellok & ( 1ll << j ) ) == 0 ) subset &= ( ~( sud->grid[j][x] ) );
+			}
 
+			if( __popcnt64( subset ) != i + 1 ) continue;
 
-
+			changed = 0;
+			for( j = 0; j < sud->length; j++ ) {
+				if( ( subset & ( 1ll << j ) ) != 0 ) {
+					changed |= ( sud->grid[j][x] & ( ~( subset ) ) );
+					sud->grid[j][x] &= subset;
+				}
+			}
+			return changed != 0;
 		}
 	}
 

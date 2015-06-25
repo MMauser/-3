@@ -35,7 +35,7 @@ DWORD WINAPI hWindow( struct Sudoku* sud ) {
 		return EXIT_FAILURE;
 	}
 
-	hWnd = CreateWindow( ( LPTSTR ) cid, _T( "Ohne Konservierungsstoffe" ), WS_OVERLAPPEDWINDOW, 0, 0, 640, 640, NULL, NULL, hInstance, NULL );
+	hWnd = CreateWindow( ( LPTSTR ) cid, _T( "Ohne Konservierungsstoffe" ), WS_OVERLAPPEDWINDOW, 0, 0, 720, 720, NULL, NULL, hInstance, NULL );
 
 	ShowWindow( hWnd, SW_SHOW );
 	UpdateWindow( hWnd );
@@ -58,18 +58,21 @@ void onPaint( WPARAM wParam, LPARAM lParam ) {
 	HDC hdc = BeginPaint( hWnd, &ps );
 	wchar_t buffer[512];
 	HANDLE hOldPen;
+	HFONT f = CreateFont( 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, L"consolas" );
+
+	HFONT hOldFont = SelectObject( hdc, f );
 
 	GetClientRect( hWnd, &rcClient );
 
-	int width = rcClient.right / 9;
-	int height = rcClient.bottom / 9;
+	int width = rcClient.right / gsud->length;
+	int height = rcClient.bottom / gsud->length;
 
 	SetBkMode( hdc, TRANSPARENT );
 
 	for( int i = 0; i < gsud->length; i++ ) {
 		for( int x = 0; x < gsud->length; x++ ) {
-			int iy = 5;
-			int ix = 5;
+			int iy = 0;
+			int ix = 0;
 			if( gsud->cellvalue[i][x] != 0 ) {
 				SetTextColor( hdc, RGB( 0, 150, 0 ) );
 				wsprintfW( buffer, L"%i", gsud->cellvalue[i][x] );
@@ -81,7 +84,7 @@ void onPaint( WPARAM wParam, LPARAM lParam ) {
 
 					if( p != 0 && p % gsud->length_of_box == 0 ) {
 						iy += height / gsud->length_of_box;
-						ix = 5;
+						ix = 0;
 					} else if( p ) ix += width / gsud->length_of_box;
 
 					if( gsud->grid[i][x] & ( 1 << p ) ) {
@@ -110,6 +113,9 @@ void onPaint( WPARAM wParam, LPARAM lParam ) {
 		}
 	}
 
+	SelectObject( hdc, hOldFont );
+
+	DeleteObject( f );
 	DeleteObject( hBoxLine );
 	EndPaint( hWnd, &ps );
 }
@@ -119,7 +125,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) {
 
 	switch( msg ) {
 	case WM_CREATE:
-		SetTimer( hWnd, 0, 100, NULL );
+		SetTimer( hWnd, 0, 1000, NULL );
 		return 0;
 	case WM_TIMER:
 		InvalidateRect( hWnd, NULL, TRUE );
@@ -156,7 +162,7 @@ int wmain( int argc, wchar_t* argv[] ) {
 	int rc;
 	timesum = 0ll;
 
-	for( i = 0; i < 1ll; i++ ) {
+	for( i = 0; i < 64ll; i++ ) {
 		rc = run( argc, argv );
 		//wprintf_s( L"\nsolver returned: %i\n", run( argc, argv ) );
 	}
@@ -250,7 +256,7 @@ int main( int argc, char* argv[] ) {
 #if defined(_DEBUG) || defined(PRINTDEBUG)
 	if( rc == 0 ) wprintf_s( L"validation successful.\n" );
 	else wprintf_s( L"validation failed.\n" );
-#if defined SUDOKU_UI 
+#if defined SUDOKU_UI && defined _DEBUG
 	getchar();
 #endif
 #endif
