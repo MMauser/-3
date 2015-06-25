@@ -21,7 +21,7 @@ int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	
 	for ( i = 2; i < 5; i++ )
 	{
-		Combinator_Create ( c, i, index, j );
+		Combinator_Initialize( &c, i, index, j );
 
 		while ( !Combinator_GetNext ( &c, dest ) )
 		{
