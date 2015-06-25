@@ -7,7 +7,7 @@ int rule4( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 
 	for( i = 0; i < sud->length; i++ ) {
 		if( i == y ) continue;
-		if( (sud->grid[i][x] ^ sud->grid[y][x]) == 0 ) {
+		if( ( sud->grid[i][x] ^ sud->grid[y][x] ) == 0 ) {
 			changed = 0;
 			for( j = 0; j < sud->length; j++ ) {
 				if( j != i && j != y ) {

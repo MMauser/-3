@@ -5,7 +5,7 @@
 int rule0( struct Sudoku* sud, unsigned int x, unsigned  int y ) {
 	unsigned int i;
 	SudokuCell row;
-	
+
 	row = 0;
 	for( i = 0; i < sud->length; i++ ) {
 		if( i != x ) {

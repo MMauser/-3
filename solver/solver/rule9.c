@@ -3,42 +3,44 @@
 //naked subset column
 int rule9( struct Sudoku* sud, unsigned int x, unsigned int y ) {
 	struct Combinator c;
-	SudokuCell col;
-	int i, j = 0;
-	int n;
+	SudokuCell cellok;
+	SudokuCell subset;
+
+	int i, j, k;
 	int index[64] = { 0 };
-	int dest[64] = { 0 };
+	int combination[4] = { 0 };
 
-	col = 0;
+	j = 0;
 
-	for ( i = 0; i < sud->length; i++ )
-	{
-		if ( sud->cellvalue[i][x] == 0 && i != y )
-		{
+	for( i = 0; i < sud->length; i++ ) {
+		if( sud->cellvalue[i][x] == 0 && i != y ) {
 			index[j++] = i;
 		}
 	}
-	
-	for ( i = 2; i < 5; i++ )
-	{
+
+	for( i = 2; i < 3; i++ ) {
 		Combinator_Initialize( &c, i, index, j );
+		combination[i] = y;
 
-		while ( !Combinator_GetNext ( &c, dest ) )
-		{
-			for ( n = 0; n < 64; n++ )
-			{
-				col &= sud->grid[dest[n]][x];
-			}
-			if ( __popcnt64 ( col ) == i + 1 )
-			{
-				for ( j = 0; j < sud->length; j++ )
-				{
-					sud->grid[j][x] &= ~( col );
+		while( Combinator_GetNext( &c, combination ) == 0 ) {
+
+			subset = 0;
+			for( j = 0; j <= i; j++ ) {
+				subset |= combination[j];
+				for( k = j + 1; k <= i; k++ ) {
+					if( sud->grid[combination[j]][x] & sud->grid[combination[k]][x] ) {
+						cellok |= ( ( 1 << j ) | ( 1 << k ) );
+						break;
+					}
 				}
-				
-				return 1;
 			}
+			if( __popcnt64( cellok ) != i + 1 ) continue;
 
+			for( j = 0; j < sud->length; j++ ) {
+				if( ( cellok & ( 1ll << j ) ) == 0 ) {
+					sud->grid[j][x] &= ( ~subset );
+				}
+			}
 		}
 
 	}
